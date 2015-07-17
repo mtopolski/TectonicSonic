@@ -9,6 +9,6 @@ angular.module('app.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', [function() {
-
+.controller('View1Ctrl', ['$scope', function($scope) {
+	$scope.MyCard = 1;
 }]);
