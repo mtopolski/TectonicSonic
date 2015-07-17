@@ -28,3 +28,19 @@
   content: "";
   padding: 0;
 }
+
+.table {
+  height: 250px;
+  width: 250px;
+  border-style: solid;
+  border-radius: 3px;
+}
+
+.card {
+  border: 2px solid black;
+  border-radius: 10px;
+  position: absolute;
+  background: white;
+  z-index: 5;
+  cursor: pointer;
+}
