@@ -128,4 +128,4 @@ module.exports.onChange = function(cb) {
 	callback = cb;
 }
 
-module.exports.serialize = function() {};
+module.exports.serialize = function() { };
