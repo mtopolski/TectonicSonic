@@ -23,6 +23,7 @@ var Deck = function() {
 var User = function(name) {
 	this.uid = assignId();
 	this.name = name;
+
 	this.money = 10000;
 	this.stake = 0;
 	this.active = false;
@@ -35,7 +36,7 @@ var User = function(name) {
 	}
 }
 
-var idCount = 0;
+var idCount = 1; //id 0 exists in poker.js for hand comparison, must start this at 1
 
 var assignId = function() {
 	return idCount++;
@@ -86,23 +87,42 @@ var checkBetRaiseCall = function(amount) {
 
 
 var nextTurn = function() {
-	//get user id of next player
+	//get user id of next player || WARNING: if a player folds or stands nextTurn must be called before they are set to inactive
 	var ids = [];
 	for (var i = 0; i < table.length; i++) {
-		if (table[i] && table[i]['active'] === true) {
-			ids.push(table[i]['uid']);
+		if (table[i] && table[i].active === true) {
+			ids.push(table[i].uid);
 		}
 	}
-	retur
-
+	return ids[(ids.indexOf(turn) + 1 < ids.length ? ids.indexOf(turn) + 1 : 0]);
 }
+
+var backToStart = 0 //this variable will become one once the turns hit full circle
 
 var nextStep = function() {
 	//see if current betting round has concluded
+	if (backToStart && !outstanding()) {
 	  //if so, next round
-	  //else, nextTurn
+	  round++;
+	  for (var i = 0; i < table.length; i++) {
+	  	pot += table[i].stake;
+	  	table[i].stake = 0;
+	  }
+	  backToStart = 0;
+	  turn = null //uid of first better for this hand, something we need to track
+  } else {
+  	nextTurn();
+  }
+}
 
-	  change()
+var outstanding = function() {
+	var result = true;
+	for (var i = 0; i < table.length; i++) {
+		if (table[i].active && table[i].stake !== minstake) {
+			result = false;
+		}
+	}
+	return result;
 }
 
 
@@ -128,4 +148,14 @@ module.exports.onChange = function(cb) {
 	callback = cb;
 }
 
-module.exports.serialize = function() { };
+module.exports.serialize = function() {
+	return 
+	{
+	  "round": round,
+	  "cards": cards,
+	  "minstake": minstake,
+	  "turn": turn,
+	  "users": users,
+	  "table": table
+  }
+};
