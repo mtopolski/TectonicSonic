@@ -19,6 +19,7 @@ module.exports.best = function(table, shown) {
 	return winners;
 }
 
+
 var cardVals = {
 	'2': 2,
 	'3': 3,
@@ -34,6 +35,7 @@ var cardVals = {
 	'k': 13,
 	'a': 14 
 }
+
 
 function determineHand(hand, shown) {
 	var newHand = [];
@@ -63,7 +65,7 @@ var judgementDay = function(cards) {
 	if (hasFours(cards)) {
 		return 8000 + high;
 	}
-	if (hasThrees(cards) && hasOnePair(cards)) {
+	if (hasThrees(cards) && hasOnePair(cards)) {//need to add value of the three of a kind, not the highest card
 		return 7000 + high;
 	}
 	if (hasFlush(cards)) {
@@ -72,13 +74,13 @@ var judgementDay = function(cards) {
 	if (straight[0]) {
 		return 5000 + shigh;
 	}
-	if (hasThrees(cards)) {
+	if (hasThrees(cards)) { 
 		return 4000 + high;
 	}
 	if (hasTwoPair(cards)) {
 		return 3000 + high;
 	}
-	if (hasOnePair(cards)) {
+	if (hasOnePair(cards)) { //we are not taking into account the value of the pair, just the kicker card, needs love
 		return 100 + high;
 	}
 	return high;
@@ -87,7 +89,7 @@ var judgementDay = function(cards) {
 var hasStraight = function(cards) {
 	var count = 1;
 	for(var i = cards.length-2; i >=0; i--) {
-		if(cards[i+1][0] - cards[i][0] === 1) count++;
+		if(cards[i+1][0] - cards[i][0] === 1) count++; //need to reset count on an else condition
 		if(count === 5) return ["true", cards[i][0]+4];
 	}
 	return [false, 0];
