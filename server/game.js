@@ -112,8 +112,8 @@ var nextStep = function() {
 //passing current directive
 var round = { 
 	0: 'waiting to start',
-	1: 'first round of betting'
-	2: 
+	1: 'first round of betting',
+	2: 'we need to write more rounds'
 }
 
 

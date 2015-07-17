@@ -49,7 +49,7 @@ function determineHand(hand, shown) {
 
 var judgementDay = function(cards) {
 	cards.sort(function(e1, e2) {
-		returns e1[0] - e2[0];
+		return e1[0] - e2[0];
 	});
 	var high = cards[cards.length - 1][0];
 	var straight = hasStraight(cards);
