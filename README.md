@@ -2,7 +2,42 @@
 
 Relax. You're here. No pain, no fear. You're with the best now.
 
-## API ##
+## Server Websocket ##
+
+The client should connect to server to receive information on the game state. Example websocket connection:
+
+```
+var ws = new WebSocket("ws://example.com:8000");
+ws.onopen(function() {
+  ws.onmessage(function(data) {
+    var gameState = JSON.parse(data);
+    // ...update accordingly
+  });  
+});
+```
+On connection and on changes to the server game state, the server will broadcast a JSON string:
+
+```
+{
+  "round": 1,
+  "cards": ["qh","kh","ah","2c","3s"],
+  "minstake": 200,
+  "turn": 27694,
+  "users": [
+    {
+        "uid": 27694,
+        "name": "Bumble the Brave",
+        "money": 13,
+        "stake", 0,
+        "active": true,
+        "hand": ["4s","4c"]
+    },
+    {...}
+  ]
+}
+```
+
+## URI Endpoints ##
 
 The server requires a uid for participation with the game. For the player to interact properly, identify with the server.
 
@@ -17,11 +52,13 @@ After identifying, a player can:
 post: `/sit/`  
 requires: `{uid: Number, seat: Number}`  
 
-Once in the game, the player, depending on whether it is their turn, may:
+A player at a table may:
 
 #### stand ####
 post: `/play/stand/`  
 requires: `{uid: Number}`  
+
+Once in game, the player, depending on whether it is their turn, may:
 
 #### check ####
 post: `/play/check/`  
