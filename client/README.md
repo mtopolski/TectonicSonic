@@ -1,0 +1,1 @@
+Front end boilerplate based on AngularJS seed project
