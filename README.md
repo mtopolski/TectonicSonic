@@ -4,7 +4,7 @@ Relax. You're here. No pain, no fear. You're with the best now.
 
 ## Server Websocket ##
 
-The client should connect to server to receive information on the game state. Example websocket connection:
+The client should connect to the server websocket to receive information on the game state. Sample websocket connection:
 
 ```
 var ws = new WebSocket("ws://example.com:8000");
@@ -33,6 +33,14 @@ On connection and on changes to the server game state, the server will broadcast
         "hand": ["4s","4c"]
     },
     {...}
+  ],
+  "table": [
+    null,
+    27694,
+    33285,
+    null,
+    91137,
+    73921
   ]
 }
 ```
