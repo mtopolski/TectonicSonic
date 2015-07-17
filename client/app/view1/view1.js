@@ -9,6 +9,19 @@ angular.module('app.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', ['$scope', function($scope) {
-	$scope.MyCard = 1;
+.controller('View1Ctrl', ['$scope', 'Users', 'Cards', function($scope, Users, Cards) {
+	$scope.user = "UserCard";
+	var players = [];
+	for (var i = 0; i < 5; i++) {
+		players.push(Users.addUser());
+	};
+	// console.log(players);
+	var player = Users.addUser();
+
+	var deckCards = Cards.shuffleBySwap();
+	console.log(deckCards);
+	// Add cards
+	// $scope.MyCard = Cards.valueSuitFromCard(1);;
+	$scope.MyCard = Cards.imageFromValueSuit("j", "h");
+
 }])

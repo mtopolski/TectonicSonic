@@ -30,16 +30,23 @@
 }
 
 .table {
-  height: 250px;
-  width: 250px;
+  height: 400px;
+  width: 900px;
+  /* Center */
+  margin-top: 150px;    
+  margin-left: auto;    
+  margin-right: auto;
   border-style: solid;
-  border-radius: 3px;
+  border-radius: 1px;
 }
 
 .card {
+  display: block;
   border: 2px solid black;
   border-radius: 10px;
-  position: absolute;
+  /*position: absolute;*/
+  position: relative;
+  margin: 3px 3px 3px 3px;
   background: white;
   z-index: 5;
   cursor: pointer;
