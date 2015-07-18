@@ -46,6 +46,7 @@ angular.module('app.service', [])
 	};
 
 	var IMAGE_VALUE = {
+		't': "10",
 		'j': "jack",
 		'a': "ace",
 		'q': "queen",
@@ -86,9 +87,15 @@ angular.module('app.service', [])
    	};
 
 	return {
+		allCards		  : allCards,
 		imageFromValueSuit: imageFromValueSuit,
 		cardFromValueSuit : cardFromValueSuit,
 		valueSuitFromCard : valueSuitFromCard,
-		shuffleBySwap   : shuffleBySwap
+		shuffleBySwap     : shuffleBySwap
 	}
 })
+.factory('GameEmulator', [function() {
+	return {
+		
+	}
+}])

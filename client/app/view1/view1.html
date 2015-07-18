@@ -4,10 +4,15 @@
 	<div class="table">
 		<div id='myCards'>
 			<!-- <img class='card' ng-src="../image/card-back.png" alt="Description"> -->
-			<img src="../image/cards/{{MyCard}}" alt="Description">
+			<img src="../image/cards/{{MyCard}}" alt="Description" class='card'>
 		</div>
 		<div class='players'>
 			{{user}}
+		</div>
+
+		<div id="deck" ng-repeat="card in deckCardsImg">
+		<!-- cardImage for deck -->
+			<img src="../image/cards/{{card}}" alt="Description" class='card'>
 		</div>
 	</div>
 </div>
