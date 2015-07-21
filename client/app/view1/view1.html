@@ -1,18 +1,30 @@
-<p>This is the partial for view 1.</p>
+<div>
+	<div class="players">
+	Something
+		<div ng-repeat="player in players" class="seat" id="{{player.seat}}">
+			Seats:{{player.seat}}
+			<div ng-repeat="playerCardImg in player.cardsImg">
+				<img src="{{playerCardImg}}" alt="Description" class='cards'>
+			</div>
+		</div>
+	</div>	
 
-<div class="container">
 	<div class="table">
-		<div id='myCards'>
-			<!-- <img class='card' ng-src="../image/card-back.png" alt="Description"> -->
-			<img src="../image/cards/{{MyCard}}" alt="Description" class='card'>
-		</div>
-		<div class='players'>
-			{{user}}
+	Table:
+		<div id="deck">
+			<!-- overlap cards -->
+			<img src="{{cardBack}}" alt="Description" class='card'>
 		</div>
 
-		<div id="deck" ng-repeat="card in deckCardsImg">
-		<!-- cardImage for deck -->
-			<img src="../image/cards/{{card}}" alt="Description" class='card'>
+		<div id="publicDeck">
+			<div id="publicCards" ng-repeat="publicCardImg in publicCardsImg">
+				<img src="{{publicCardImg}}" alt="Description" class='card'>
+			</div>	
 		</div>
+		<div id='playerDeck'>
+			<div id='myCards' ng-repeat="myCard in mySelf.cards">
+				<img src="../image/{{myCard}}" alt="Description" class='card'>
+			</div>	
+		</div>		
 	</div>
 </div>

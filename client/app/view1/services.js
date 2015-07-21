@@ -12,6 +12,10 @@ angular.module('app.service', [])
 		this.uid = uid;
 		this.name = name;
 		this.money = 500;
+		this.cards = [];
+		// Current only show seat sequence same as uid
+		this.seat = uid;
+		this.cardsImg = [];
 	}
 
 	var addUser = function() {
@@ -57,7 +61,11 @@ angular.module('app.service', [])
 		if (IMAGE_VALUE[value] !== undefined) {
 			value = IMAGE_VALUE[value];
 		};
-		return "" + value + "-" + IMAGE_SUIT[suit] + ".png";
+		return "../image/cards/" + value + "-" + IMAGE_SUIT[suit] + ".png";
+	};
+
+	var imageCardBack = function() {
+		return "../image/card-back.png";
 	};
 
     var cardFromValueSuit = function (value, suit) {
@@ -75,15 +83,24 @@ angular.module('app.service', [])
 
     // in place random shuffle
    	var shuffleBySwap = function() {
-   		var deckCards = allCards.slice(1);
-   		for (var i = 0, l = deckCards.length; i < l - 1; i++) {
+   		var cards = allCards.slice(1);
+   		for (var i = 0, l = cards.length; i < l - 1; i++) {
    			var j = i + Math.floor(Math.random() * (l - i));
    			// swap
-   			var temp 		 = deckCards[i];
-   			deckCards[i]     = deckCards[j];
-   			deckCards[j] 	 = temp;
+   			var temp	 = cards[i];
+   			cards[i]     = cards[j];
+   			cards[j] 	 = temp;
    		}
-   		return deckCards;
+   		return cards;
+   	};
+
+   	var renderCards = function(cards) {
+   		var deckCardsImg = [];
+		for (var i = 0, l = cards.length; i < l; i++) {
+			// deckCardsImg[i] = this.imageFromValueSuit(cards[i][0], cards[i][1]);
+			deckCardsImg[i] = imageFromValueSuit(cards[i][0], cards[i][1]);
+		};
+		return deckCardsImg;
    	};
 
 	return {
@@ -91,7 +108,9 @@ angular.module('app.service', [])
 		imageFromValueSuit: imageFromValueSuit,
 		cardFromValueSuit : cardFromValueSuit,
 		valueSuitFromCard : valueSuitFromCard,
-		shuffleBySwap     : shuffleBySwap
+		shuffleBySwap     : shuffleBySwap,
+		imageCardBack 	  : imageCardBack,
+		renderCards 	  : renderCards
 	}
 })
 .factory('GameEmulator', [function() {
