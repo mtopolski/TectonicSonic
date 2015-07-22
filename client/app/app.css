@@ -40,6 +40,14 @@
   position: absolute;
 }*/
 
+body {
+  background-image: url("./image/texture/table3.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .table {
   height: 350px;
   width: 800px;
@@ -47,19 +55,12 @@
   margin-top: 250px;    
   margin-left: auto;    
   margin-right: auto;
-  border-style: solid;
+  /*border-style: solid;*/
   border-radius: 1px;
 }
 
 .players {
-  /*padding-left: 100px;*/
   margin-left: 200px;
-/*  margin-top: 50px;    
-  margin-left: auto;    
-  margin-right: auto;
-*//*  border-style: solid;
-  border-radius: 1px; 
-*/
 }
 
 .table #publicDeck {
@@ -100,6 +101,8 @@
   z-index: 5;
   cursor: pointer;
   float:left;
+  /*transform: rotateX(50deg) rotateY(20deg) rotateZ(15deg);*/
+  transform: rotateX(50deg) rotateY(0deg) rotateZ(15deg);
 }
 
 .cards {

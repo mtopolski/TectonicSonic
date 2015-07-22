@@ -9,7 +9,7 @@ angular.module('app.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', ['$scope', 'Users', 'Cards', 'GameEmulator', function($scope, Users, Cards, GameEmulator) {
+.controller('View1Ctrl', ['$scope', 'Users', 'Cards', 'GameEmulator', 'wsComm', function($scope, Users, Cards, GameEmulator, wsComm) {
 	var players = [];
 	for (var i = 0; i < 5; i++) {
 		players.push(Users.addUser());
@@ -48,8 +48,24 @@ angular.module('app.view1', ['ngRoute'])
 	mySelf.cards = Cards.renderCards(mySelf.cards);
 	$scope.mySelf = mySelf;	
 
-	// fold 
-	// check
-	// leave
+	// init ws communication
 
+	// Check wsState first
+	wsComm.wsInit();
+	
+	// DRY
+	$scope.checkBtn = function() {
+		wsComm.wsSend(JSON.stringify("Check"));
+	}
+
+	$scope.foldBtn = function() {
+		wsComm.wsSend(JSON.stringify("Fold"));
+	}
+
+	$scope.standUp = function() {
+		wsComm.wsSend(JSON.stringify("StandUp"));
+	}
+
+	// wsComm.wsSend();
+	// wsComm.wsReceive();
 }])

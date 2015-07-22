@@ -113,6 +113,42 @@ angular.module('app.service', [])
 		renderCards 	  : renderCards
 	}
 })
+.factory("wsComm", [function() {
+	var ws;
+	var wsInit = function() {
+		var port = 8000;
+		var host = "localhost" || window.document.location.host.replace(/:.*/, '');
+		ws = new WebSocket('ws://' + host + ':' + port);
+	};
+
+	var wsSend = function(msg) {
+		if (ws === undefined) {
+			console.error("WebSocket has not been initialized yet!");
+			return null;
+		};
+
+		ws.onopen = function(msg) {
+			console.log("Sending out message: ", msg);
+			ws.send(msg);
+		};
+
+		ws.onopen(msg);
+	};
+
+	var wsReceive = function() {
+		ws.onmessage = function (evt) {
+        	// console.log("Browser received data", JSON.parse(evt.data));
+        	var receivedData = JSON.parse(evt.data);
+        	console.log("Browser received data", receivedData);
+	    };
+	};
+		
+	return {
+		wsInit: wsInit,
+		wsSend: wsSend,
+		wsReceive: wsReceive
+	}
+}])
 .factory('GameEmulator', [function() {
 	return {
 		
