@@ -6,7 +6,7 @@ angular.module('app.service', [])
 }])
 .factory('Users', [function() {
 	// User model:
-	// global uid
+  // global uid
 	var g_uid = 0;
 	var User = function (uid, name) {
 		this.uid = uid;
@@ -69,49 +69,42 @@ angular.module('app.service', [])
 		return "../image/card-back.png";
 	};
 
-    var cardFromValueSuit = function (value, suit) {
-    	// 0=none, 1-13=2-Ah 14-26=2-Ad 27-39=2-Ac 40-52=2-As
-    	// suit
-    	return SUIT[suit] + value;
-    };
+  var cardFromValueSuit = function (value, suit) {
+  	// 0=none, 1-13=2-Ah 14-26=2-Ad 27-39=2-Ac 40-52=2-As
+  	// suit
+  	return SUIT[suit] + value;
+  };
 
-    // var valueSuitFromCard = function(card) {
-    // 	if (card < 0 || card > 52) {
-    // 		return '';
-    // 	};
-    // 	return allCards[card];
-    // };
+  // in place random shuffle
+ 	var shuffleBySwap = function() {
+ 		var cards = allCards.slice(1);
+ 		for (var i = 0, l = cards.length; i < l - 1; i++) {
+ 			var j = i + Math.floor(Math.random() * (l - i));
+ 			// swap
+ 			var temp	 = cards[i];
+ 			cards[i]     = cards[j];
+ 			cards[j] 	 = temp;
+ 		}
+ 		return cards;
+ 	};
 
-    // in place random shuffle
-   	var shuffleBySwap = function() {
-   		var cards = allCards.slice(1);
-   		for (var i = 0, l = cards.length; i < l - 1; i++) {
-   			var j = i + Math.floor(Math.random() * (l - i));
-   			// swap
-   			var temp	 = cards[i];
-   			cards[i]     = cards[j];
-   			cards[j] 	 = temp;
-   		}
-   		return cards;
-   	};
-
-   	var renderCards = function(cards) {
-   		var deckCardsImg = [];
-		for (var i = 0, l = cards.length; i < l; i++) {
-			// deckCardsImg[i] = this.imageFromValueSuit(cards[i][0], cards[i][1]);
-			deckCardsImg[i] = imageFromValueSuit(cards[i][0], cards[i][1]);
-		};
-		return deckCardsImg;
-   	};
+ 	var renderCards = function(cards) {
+ 		var deckCardsImg = [];
+	for (var i = 0, l = cards.length; i < l; i++) {
+		// deckCardsImg[i] = this.imageFromValueSuit(cards[i][0], cards[i][1]);
+		deckCardsImg[i] = imageFromValueSuit(cards[i][0], cards[i][1]);
+	};
+	return deckCardsImg;
+ 	};
 
 	return {
-		allCards		  : allCards,
+		allCards: allCards,
 		imageFromValueSuit: imageFromValueSuit,
-		cardFromValueSuit : cardFromValueSuit,
+		cardFromValueSuit: cardFromValueSuit,
 		// valueSuitFromCard : valueSuitFromCard,
-		shuffleBySwap     : shuffleBySwap,
-		imageCardBack 	  : imageCardBack,
-		renderCards 	  : renderCards
+		shuffleBySwap: shuffleBySwap,
+		imageCardBack: imageCardBack,
+		renderCards: renderCards
 	}
 })
 .factory("wsComm", [function() {
@@ -136,7 +129,7 @@ angular.module('app.service', [])
 		ws.onopen(msg);
 	};
 
-	var wsReceive = function() {
+  var wsReceive = function() {
 		ws.onmessage = function (evt) {
         	// console.log("Browser received data", JSON.parse(evt.data));
         	var receivedData = JSON.parse(evt.data);
@@ -150,12 +143,83 @@ angular.module('app.service', [])
 		wsReceive: wsReceive
 	}
 }])
-.factory("httpRequest", ['$http', function($http) {
-	var identify = function() {
-		// $http.g
-	};
+.factory('httpRequest', ['$http', function($http) {
+  var baseUri = "";
+  var identify = function(username) {
+		return $http({
+      method: "POST",
+      url: baseUri + "/user/",
+      data: {name: username}
+    })
+  };
+
+  var sit = function(uid, seatId) {
+    return $http({
+      method: "POST",
+      url: baseUri + "/sit/",
+      data: {
+        uid: uid,
+        seat: seatId 
+      }
+    })
+  };
+
+  var stand = function(uid) {
+    return $http({
+      method: "POST",
+      url: baseUri + "/play/stand/",
+      data: {
+        uid: uid
+      }
+    })
+  };
+
+  var check = function(uid) {
+    return $http({
+      method: "POST",
+      url: baseUri + "/play/check/",
+      data: {
+        uid: uid
+      }
+    })
+  };
+
+  var call = function(uid) {
+    return $http({
+      method: "POST",
+      url: baseUri + "/play/call/",
+      data: {
+        uid: uid
+      }
+    })
+  };
+
+  var bet = function(uid) {
+    return $http({
+      method: "POST",
+      url: baseUri + "/play/bet/",
+      data: {
+        uid: uid
+      }
+    })
+  };
+
+  var fold = function(uid) {
+    return $http({
+      method: "POST",
+      url: baseUri + "/play/fold/",
+      data: {
+        uid: uid
+      }
+    })
+  };
 
 	return {
-		identify: identify
+		identify: identify,
+    sit: sit,
+    stand: stand,
+    check: check,
+    fold: fold,
+    bet: bet
 	}
 }])

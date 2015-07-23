@@ -9,7 +9,8 @@ angular.module('app.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', ['$scope', 'Users', 'Cards', 'wsComm', function($scope, Users, Cards, wsComm) {
+.controller('View1Ctrl', ['$scope', 'Users', 'Cards', 'wsComm', 'httpRequest', function($scope, Users, Cards, wsComm, httpRequest
+) {
 	var players = [];
 	for (var i = 0; i < 5; i++) {
 		players.push(Users.addUser());
@@ -53,7 +54,6 @@ angular.module('app.view1', ['ngRoute'])
 	// Check wsState first
 	wsComm.wsInit();
 	
-	// DRY
 	$scope.checkBtn = function() {
 		wsComm.wsSend(JSON.stringify("Check"));
 	}
