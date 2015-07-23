@@ -5,7 +5,7 @@ angular.module('app.service', [])
 
 }])
 .factory('Users', [function() {
-// User model:
+	// User model:
 	// global uid
 	var g_uid = 0;
 	var User = function (uid, name) {
@@ -25,6 +25,7 @@ angular.module('app.service', [])
 		return newUser;
 	};
 
+	// request user from server side
 	return {
 		addUser: addUser
 	}
@@ -74,12 +75,12 @@ angular.module('app.service', [])
     	return SUIT[suit] + value;
     };
 
-    var valueSuitFromCard = function(card) {
-    	if (card < 0 || card > 52) {
-    		return '';
-    	};
-    	return allCards[card];
-    };
+    // var valueSuitFromCard = function(card) {
+    // 	if (card < 0 || card > 52) {
+    // 		return '';
+    // 	};
+    // 	return allCards[card];
+    // };
 
     // in place random shuffle
    	var shuffleBySwap = function() {
@@ -107,7 +108,7 @@ angular.module('app.service', [])
 		allCards		  : allCards,
 		imageFromValueSuit: imageFromValueSuit,
 		cardFromValueSuit : cardFromValueSuit,
-		valueSuitFromCard : valueSuitFromCard,
+		// valueSuitFromCard : valueSuitFromCard,
 		shuffleBySwap     : shuffleBySwap,
 		imageCardBack 	  : imageCardBack,
 		renderCards 	  : renderCards
@@ -149,8 +150,12 @@ angular.module('app.service', [])
 		wsReceive: wsReceive
 	}
 }])
-.factory('GameEmulator', [function() {
+.factory("httpRequest", ['$http', function($http) {
+	var identify = function() {
+		// $http.g
+	};
+
 	return {
-		
+		identify: identify
 	}
 }])

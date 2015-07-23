@@ -1,16 +1,22 @@
 <div>
-	<div class="players">
-	Something
-		<div ng-repeat="player in players" class="seat" id="{{player.seat}}">
+	<div class="gameStats">
+		Game Stats:	</br>
+		Line1: Some text </br>
+		Line2: Some text </br>
+		Line3: Some text </br>
+		Line4: Some text </br>
+	</div>
+
+	<div class="playersView">
+		<div ng-repeat="player in players">
 			Seats:{{player.seat}}
 			<div ng-repeat="playerCardImg in player.cardsImg">
-				<img src="{{playerCardImg}}" alt="Description" class='cards'>
+					<img src="{{playerCardImg}}" alt="Description"  class="cards">
 			</div>
 		</div>
 	</div>
 
 	<div class="table">
-	Table:
 		<div id="deck">
 			<!-- overlap cards -->
 			<img src="{{cardBack}}" alt="Description" class='card'>
@@ -29,9 +35,13 @@
 	</div>
 
 	<!-- user input -->
-	<div>
-		<button type="button" class="btn-info" ng-click="checkBtn()">Check</button>
-		<button type="button" class="btn-info" ng-click="foldBtn()">Fold</button>
-		<button type="button" class="btn-info" ng-click="standUp()">StandUp</button>
+	<div class="controlPanel">
+		<!-- Fix: button lenght -->
+		<button type="button" class="btn-info" ng-click="checkBtn()">Check</button> </br>
+		<button type="button" class="btn-info" ng-click="foldBtn()">Fold</button> </br>
+		<button type="button" class="btn-info" ng-click="callBtn()">Call</button> </br>
+		<button type="button" class="btn-info" ng-click="betBtn()">Bet</button> </br>
+		<button type="button" class="btn-info" ng-click="standBtn()">Stand</button> </br>
+		<button type="button" class="btn-info" ng-click="sitBtn()">Sit</button> </br>
 	</div>
 </div>

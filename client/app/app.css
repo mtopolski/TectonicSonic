@@ -1,4 +1,4 @@
-/* app css stylesheet */
+  /* app css stylesheet */
 
 .menu {
   list-style: none;
@@ -29,61 +29,41 @@
   padding: 0;
 }
 
-/*.container #seat2 {
-  display: block;
-  height: auto;
-  width: 170px;
-  margin-top: 50px;    
-  margin-left: 200px;    
-  margin-right: auto;
-  float: left;
-  position: absolute;
-}*/
-
 body {
-  background-image: url("./image/texture/table3.jpg");
+  /*color: BurlyWood;*/
+  color: SandyBrown;
+  /*background-image: url("./image/texture/table3.jpg");*/
+  background-image: url("./image/texture/table3_cut.jpg");
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
 
-.table {
-  height: 350px;
-  width: 800px;
-  /* Center */
-  margin-top: 250px;    
-  margin-left: auto;    
-  margin-right: auto;
-  /*border-style: solid;*/
-  border-radius: 1px;
-}
-
-.players {
-  margin-left: 200px;
-}
-
-.table #publicDeck {
-  height: 450px;
-  width: 600px;
-  /* Center */
-  margin-top: 50px;    
-  margin-left: 150px;    
-  margin-right: auto;
+.playersView {
   position: absolute;
-}
-
-.table #playerDeck {
-  height: auto;
-  width: 170px;
-  /*border-style: solid;*/
-  margin-top: 200px;    
-  margin-left: 200px;    
-  margin-right: auto;
-  /*border-style: solid;*/
-  /*float: center;*/
   float: left;
-  position: absolute;
+  margin-left: 20px;
+  margin-top: -350px;
+  display: block;
+  /*position: relative;*/
+  /*transform: rotateX(50deg) rotateY(0deg) rotateZ(15deg); */
+}
+
+.cards {
+  width: 75px;
+  height: 110px;   
+  display: block;
+  border: 2px solid black;
+  border-radius: 10px;
+  /*position: absolute;*/
+  position: relative;
+  margin: 3px 3px 3px 3px;
+  background: white;
+  z-index: 5;
+  cursor: pointer;
+  /*float:right;*/
+  transform: rotateX(40deg) rotateY(-10deg) rotateZ(10deg);
 }
 
 .card {
@@ -94,7 +74,6 @@ body {
   display: block;
   border: 2px solid black;
   border-radius: 10px;
-  /*position: absolute;*/
   position: relative;
   margin: 3px 3px 3px 3px;
   background: white;
@@ -105,44 +84,66 @@ body {
   transform: rotateX(50deg) rotateY(0deg) rotateZ(15deg);
 }
 
-.cards {
-  /*Resize */
-  /* Card Dimension */
-  width: 75px;
-  height: auto;   
-  display: block;
-  border: 2px solid black;
-  border-radius: 6px;
-  /*position: absolute;*/
-  position: relative;
-  /*margin-left: 5px;*/
-  margin: 3px 3px 3px 3px;
-  background: white;
-  z-index: 5;
-  cursor: pointer;
-  float:left;
+.table {
+  height: 350px;
+  width: 800px;
+  /* Center */
+  margin-top: 350px;    
+  margin-left: 400px;    
+  margin-right: auto;
+  /*border-style: solid;*/
+  border-radius: 1px;
 }
 
-.seat {
-  width: 75px;
-  height: 110px;   
-  display: block;
-  border: 2px solid black;
-  border-radius: 10px;
-  /*position: absolute;*/
-  position: relative;
-  margin-left: 100px;
-  margin-right: 200px;
-  margin-top: auto;
-  margin-top: auto;
-  margin: 3px 3px 3px 3px;
-  background: white;
-  z-index: 5;
-  cursor: pointer;
-  float:left;
+.table #publicDeck {
+  height: 450px;
+  width: 600px;
+  /* Center */
+  position: absolute;
+  margin-top: -50px;    
+  margin-left: 150px;    
+  margin-right: auto;
+  
 }
 
-.spacer {
-  width: 400px;
-  margin-left: 100px;
+.table #deck {
+  width: 75px;
+  height: auto;
+  margin-top: -100px;
+  /* Center */
+  position: absolute;
+/*  margin-top: 50px;    
+  margin-left: 150px;    
+  margin-right: auto;*/
+  
+}
+
+.table #playerDeck {
+  height: auto;
+  width: 170px;
+  /*border-style: solid;*/
+  position: absolute;
+  margin-top: 200px;    
+  margin-left: 200px;    
+  margin-right: auto;
+  /*border-style: solid;*/
+  /*float: center;*/
+  float: left;
+}
+
+.controlPanel {
+  color: green;
+  width: 100px;
+  float:right;
+  margin-right: 20px;
+  margin-top: -150px;
+  /*margin-left: 990px;*/
+  /*position: absolute;*/
+}
+
+.gameStats {
+  float:right;
+  margin-top: -350px;
+  margin-right: 50px;
+  /*position: relative;*/
 }
