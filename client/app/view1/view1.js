@@ -9,8 +9,8 @@ angular.module('app.view1', ['ngRoute'])
   });
 }])
 
-.controller('ViewCtrl', ['$scope', 'Users', 'Cards', 'wsComm', 'httpRequest', 
-	function($scope, Users, Cards, wsComm, httpRequest) {
+.controller('ViewCtrl', ['$scope', 'Users', 'Cards', 'wsComm', 'httpRequest', 'gameStateEmu',
+	function($scope, Users, Cards, wsComm, httpRequest, gameStateEmu) {
 	///////////////////////////////////////////////
 	// Sim game logic
 	var players = [];
@@ -119,34 +119,12 @@ angular.module('app.view1', ['ngRoute'])
 	// check updated gameState received from WebSocket
 	// Required logic for updating front end view here
 	var gameStateProc = function (gameState) {
-		// console.log(gameState);
-
-		// {  
-		// 	"round": 1,
-		//   "cards": ["qh","kh","ah","2c","3s"],
-		//   "minstake": 200,
-		//   "turn": 27694,
-		//   "users": [
-	 //    {
-  //       "uid": 27694,
-  //       "name": "Bumble the Brave",
-  //       "money": 13,
-  //       "stake", 0,
-  //       "active": true,
-  //       "hand": ["4s","4c"]
-	 //    },
-  //   		{...}
-  // 		],
-		//   "table": [
-		//     null,
-		//     27694,
-		//     33285,
-		//     null,
-		//     91137,
-		//     73921
-		//   ]
-		// }
-		
+		// required for dynamically change scope
+		$scope.$apply(function() {
+			// $scope.gameState = gameState;	
+			$scope.gameState = JSON.parse(gameStateEmu.gameStateJSON[0]); 				// Test only
+			console.log($scope.gameState);
+		});
 	};
 	// update game state through webSocket
 	wsComm.wsUpdate(gameStateProc);

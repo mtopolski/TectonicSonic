@@ -6,10 +6,17 @@
 
 		<button type="button" class="btn-info" ng-click="inputUsername()"  id="inputUsername">Enter Game</button> <br>
 
+		<!-- Game Stats (Currently Simulation Only!):	<br>
+		Received from WebSocket: {{gameState.heapUsed}}; <br>
+		Line2: {{gameState.rss}} <br>
+		Line3: {{gameState.heapTotal}} <br>
+		Line4: {{gameState.heapTotal}} <br> -->
+
 		Game Stats (Currently Simulation Only!):	<br>
-		Line2: From WebSocket <br>
-		Line3: From WebSocket <br>
-		Line4: From WebSocket <br>
+		Received from WebSocket: {{gameState.cards}}; <br>
+		Line2: {{gameState.turn}} <br>
+		Line3: {{gameState.minstake}} <br>
+		Line4: {{gameState.minstake}} <br>
 	</div>
 
 	<div class="playersView">
