@@ -101,7 +101,6 @@ angular.module('app.service', [])
 		allCards: allCards,
 		imageFromValueSuit: imageFromValueSuit,
 		cardFromValueSuit: cardFromValueSuit,
-		// valueSuitFromCard : valueSuitFromCard,
 		shuffleBySwap: shuffleBySwap,
 		imageCardBack: imageCardBack,
 		renderCards: renderCards
@@ -128,19 +127,24 @@ angular.module('app.service', [])
 
 		ws.onopen(msg);
 	};
-
-  var wsReceive = function() {
-		ws.onmessage = function (evt) {
-        	// console.log("Browser received data", JSON.parse(evt.data));
-        	var receivedData = JSON.parse(evt.data);
-        	console.log("Browser received data", receivedData);
-	    };
-	};
 		
+
+  var wsUpdate = function (gameStateUpdateCb) {
+    if (ws === undefined) {
+      console.error("WebSocket has not been initialized yet!");
+      return null;
+    };
+    ws.onmessage = function (evt) {
+      var gameState = JSON.parse(evt.data);
+      gameStateUpdateCb(gameState);
+    };
+  };
+
 	return {
+    ws: ws,
 		wsInit: wsInit,
 		wsSend: wsSend,
-		wsReceive: wsReceive
+    wsUpdate: wsUpdate
 	}
 }])
 .factory('httpRequest', ['$http', function($http) {
@@ -212,7 +216,7 @@ angular.module('app.service', [])
         uid: uid
       }
     })
-  };
+  };  
 
 	return {
 		identify: identify,
