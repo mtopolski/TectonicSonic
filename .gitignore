@@ -41,3 +41,4 @@ Thumbs.db
 client/app/bower_components/*
 client/node_modules/*
 client/index.js
+client/server/*
