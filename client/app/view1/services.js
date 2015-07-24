@@ -196,12 +196,13 @@ angular.module('app.service', [])
     })
   };
 
-  var bet = function(uid) {
+  var bet = function(uid, value) {
     return $http({
       method: "POST",
       url: baseUri + "/play/bet/",
       data: {
-        uid: uid
+        uid: uid,
+        value: value
       }
     })
   };
@@ -232,6 +233,7 @@ angular.module('app.service', [])
     cards: ["qh","kh","ah","2c","3s"],
     minstake: 200,
     turn: 27694,
+    // turn: 33285,
     user: [
       {
         "uid": 27694,
@@ -254,7 +256,7 @@ angular.module('app.service', [])
         "name": "Name2",
         "money": 130,
         "stake": 0,
-        "active": false,
+        "active": true,
         "hand": ["4s","4c"]        
       },
       {
@@ -270,7 +272,7 @@ angular.module('app.service', [])
         "name": "Name4",
         "money": 130,
         "stake": 0,
-        "active": true,
+        "active": false,
         "hand": ["4s","4c"]        
       },
       {
@@ -278,7 +280,7 @@ angular.module('app.service', [])
         "name": "Name6",
         "money": 130,
         "stake": 0,
-        "active": false,
+        "active": true,
         "hand": ["4s","4c"]        
       }
     ],

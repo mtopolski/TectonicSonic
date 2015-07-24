@@ -1,9 +1,13 @@
 <div>
 	<div class="gameStats">
-		<div ng-show="mySelf.uid" ng-class="{highlight: mySelf.active}">
+		<div ng-show="mySelf.uid" ng-class="{highlight: mySelf.uid === gameState.turn, inactive: !mySelf.active}">
 			My ID: {{mySelf.uid}} <br>
 			Your turn?: {{gameState.turn}} <br>
-			minstake: {{gameState.minstake}} <br>
+			minstake: ${{gameState.minstake}} <br>
+			<!-- Only show sit option when mySelf is not in game -->
+			<div ng-hide="mySelf.inGame">
+				<button type="button" class="btn-info" ng-click="sitBtn()">Sit</button> <br>
+			</div>
 		</div>
 		<div ng-hide='mySelf.uid'>User Name:
 			<input type="text" name="User Name" ng-model="mySelf.myName" 
@@ -15,9 +19,9 @@
 	<div class="playersView">
 		<div ng-repeat="user in users">
 			<div ng-repeat="userCardImg in user.cardsImg">
-				<div ng-class="{textBox: user, highlight: user.active}">
+				<div ng-class="{textBox: user, highlight: user.uid === gameState.turn, inactive: !user.active}">
 					{{user.name}} <br>
-					InGame: {{user.active}} <br>
+					<!-- InGame: {{user.active}} <br> -->
 					Stake: {{user.stake}} <br>
 					$ {{user.money}} 
 				</div>
@@ -47,11 +51,14 @@
 	<!-- user input -->
 	<div class="controlPanel">
 		<!-- Fix: button lenght -->
-		<button type="button" class="btn-info" ng-click="checkBtn()">Check</button> <br>
-		<button type="button" class="btn-info" ng-click="foldBtn()">Fold</button> <br>
-		<button type="button" class="btn-info" ng-click="callBtn()">Call</button> <br>
-		<button type="button" class="btn-info" ng-click="betBtn()">Bet</button> <br>
-		<button type="button" class="btn-info" ng-click="standBtn()">Stand</button> <br>
-		<button type="button" class="btn-info" ng-click="sitBtn()">Sit</button> <br>
+		<div ng-show="mySelf.active && mySelf.uid === gameState.turn">
+			<input ng-show="mySelf.showBet" type="text" name="User Name" ng-model="mySelf.stake" 
+				pattern="^[0-9 _]{1,15}$">
+			<button type="button" class="btn-info" ng-click="betBtn()">Bet</button> <br>
+			<button type="button" class="btn-info" ng-click="checkBtn()">Check</button> <br>
+			<button type="button" class="btn-info" ng-click="callBtn()">Call</button> <br>
+			<button type="button" class="btn-info" ng-click="foldBtn()">Fold</button> <br>
+			<button type="button" class="btn-info" ng-click="standBtn()">Stand</button> <br>
+		</div>
 	</div>
 </div>

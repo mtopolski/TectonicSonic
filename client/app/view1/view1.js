@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 
 angular.module('app.view1', ['ngRoute'])
 
@@ -18,8 +18,9 @@ angular.module('app.view1', ['ngRoute'])
 		$scope.users = [];
 		$scope.mySelf = {
 			myName: "",
-			uid: undefined
+			uid: undefined,
 			// uid: undefined || 27694
+			inGame: false
 		};
 		$scope.gameState;
 
@@ -33,17 +34,26 @@ angular.module('app.view1', ['ngRoute'])
 			// });
 			
 			// received assign uid from identity request resp
+			// sim only
 			if (myName === "27694") {
 				$scope.mySelf.uid = 27694;	
 				// console.log("mySelf", $scope.mySelf);
-			};
+			} else {
+				$scope.mySelf.uid = 27695;
+			}
 		};
 
 		$scope.sitBtn = function() {
 			var myUid = $scope.mySelf.uid;
+			var seatId = checkSeats($scope.gameState.table);
 			// httpRequest.sit(myUid, seatId).then(function(dataResponse, status, headers, config) {
 				
 			// };
+
+			// sim only
+			if (myUid === 27695) {
+				$scope.mySelf.uid = 27694;
+			};
 		};
 
 		$scope.standBtn = function() {
@@ -70,7 +80,11 @@ angular.module('app.view1', ['ngRoute'])
 		// input how much
 		$scope.betBtn = function() {
 			var myUid = $scope.mySelf.uid;
-			// httpRequest.bet(myUid).then(function(dataResponse, status, headers, config) {
+			var myBid = $scope.mySelf.stake;
+			if (myBid < $scope.gameState.minstake) {
+				myBid = $scope.mySelf.stake = $scope.gameState.minstake;
+			};
+			// httpRequest.bet(myUid, myBid).then(function(dataResponse, status, headers, config) {
 				
 			// };
 		};
@@ -84,23 +98,32 @@ angular.module('app.view1', ['ngRoute'])
 
 	}
 
+	// Determine which seat(s) is/are empty, then place the user to first avaiable seat
+	var checkSeats = function(table) {
+		for (var seat = 0, l = table.length; seat < l; seat++) {
+			if (table[seat] === null) {
+				return seat;
+			};
+		};
+		return null;
+	};
+
 	// expect input array of users
 	var renderUsers = function(userGroup, mySelf) {
 		var users = [];
-		for (var i = 0; i < userGroup.length; i++) {
+		for (var i = 0, l = userGroup.length; i < l; i++) {
 			if (userGroup[i].uid === mySelf.uid) {
 					$scope.mySelf = userGroup[i];
-					// console.log("Find Myself Data", $scope.mySelf.hand);
-					// renderMySelf
+					// render mySelf
+					$scope.mySelf.inGame = true;
 					$scope.mySelf.cardsView = Cards.renderCards($scope.mySelf.hand);
-					continue;
+					// continue;
 			};
 			
 			// render other users
 			users[i] = userGroup[i];	
 			users[i].cardsImg = [];
 			if (userGroup[i].uid !== null) {
-				// user name and stats
 				users[i].cardsImg.push(Cards.imageCardBack());
 			}
 		};
@@ -126,4 +149,5 @@ angular.module('app.view1', ['ngRoute'])
 
 	init();
 	wsComm.wsUpdate(gameStateProc);
+
 }])

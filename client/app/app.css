@@ -73,6 +73,18 @@ body {
   border-radius: 3px;
 }
 
+.inactive {
+  width: 150px;
+  height: auto;
+  float:left;
+  /*float:right;*/
+  background: rgba(0,0,0,0.5);
+  padding: 3px 5px;
+  margin: -3px -5px;
+  line-height: 1.7;
+  border-radius: 3px;
+}
+
 .cards {
   width: 75px;
   height: 110px;   
@@ -171,6 +183,10 @@ body {
   /*position: relative;*/
 }
 
+.gameStats button {
+  color: black;
+}
+
 .gameStats #inputUsername {
   color: black;
 }
@@ -179,6 +195,11 @@ input {
   color: black;
 }
 
+.controlPanel {
+  margin-top: -200px;
+}
+
 button {
+  margin-top:10px;
   width: 6em;  height: 1.8em;
 }
