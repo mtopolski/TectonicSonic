@@ -4,31 +4,6 @@ angular.module('app.service', [])
 .factory('ViewService', [function() {
 
 }])
-.factory('Users', [function() {
-	// User model:
-  var g_uid = 0;
-	var User = function (uid, name) {
-		this.uid = uid;
-		this.name = name;
-		this.money = 500;
-		this.cards = [];
-		// Current only show seat sequence same as uid
-		this.seat = uid;
-		this.cardsImg = [];
-	}
-
-	var addUser = function() {
-		var userName = "user";
-		var uid = g_uid++;
-		var newUser = new User(uid, userName+uid);
-		return newUser;
-	};
-
-	// request user from server side
-	return {
-		addUser: addUser
-	}
-}])
 .factory('Cards', function() {
 	var allCards = ['', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'th', 'jh', 'qh', 'kh', 'ah'
                      , '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'td', 'jd', 'qd', 'kd', 'ad'
@@ -238,7 +213,7 @@ angular.module('app.service', [])
       {
         "uid": 27694,
         "name": "Bumble the Brave",
-        "money": 130,
+        "money": 1300,
         "stake": 0,
         "active": true,
         "hand": ["4s","4c"]        
@@ -254,7 +229,7 @@ angular.module('app.service', [])
       {
         "uid": 33285,
         "name": "Name2",
-        "money": 130,
+        "money": 1300,
         "stake": 0,
         "active": true,
         "hand": ["4s","4c"]        
@@ -270,7 +245,7 @@ angular.module('app.service', [])
       {
         "uid": 91137,
         "name": "Name4",
-        "money": 130,
+        "money": 1300,
         "stake": 0,
         "active": false,
         "hand": ["4s","4c"]        
@@ -278,7 +253,7 @@ angular.module('app.service', [])
       {
         "uid": 73921,
         "name": "Name6",
-        "money": 130,
+        "money": 1300,
         "stake": 0,
         "active": true,
         "hand": ["4s","4c"]        
