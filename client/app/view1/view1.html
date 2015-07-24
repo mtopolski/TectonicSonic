@@ -1,22 +1,27 @@
 <div>
 	<div class="gameStats">
-		User Name:
-		<input type="text" name="User Name" ng-model="mySelf.myName" 
-		pattern="^[A-Za-z0-9 _]{1,15}$"> <br>
-		<p>{{}}</p>
-		<button type="button" class="btn-info" ng-click="inputUsername()"  id="inputUsername">Enter Game</button> <br>
-		Game Stats (Currently Simulation Only!):	<br>
-		Received from WebSocket: {{gameState.cards}}; <br>
-		Line2: {{gameState.turn}} <br>
-		Line3: {{gameState.minstake}} <br>
-		Line4: {{gameState.minstake}} <br>
+		<div ng-show="mySelf.uid" ng-class="{highlight: mySelf.active}">
+			My ID: {{mySelf.uid}} <br>
+			Your turn?: {{gameState.turn}} <br>
+			minstake: {{gameState.minstake}} <br>
+		</div>
+		<div ng-hide='mySelf.uid'>User Name:
+			<input type="text" name="User Name" ng-model="mySelf.myName" 
+			pattern="^[A-Za-z0-9 _]{1,15}$">
+			<button type="button" class="btn-info" ng-click="inputUsername()"  id="inputUsername">Enter Game</button> <br>
+		</div>
 	</div>
 
 	<div class="playersView">
 		<div ng-repeat="user in users">
-			{{user.uid}}
 			<div ng-repeat="userCardImg in user.cardsImg">
-					<img src="{{userCardImg}}" alt="Description"  class="cards">
+				<div ng-class="{textBox: user, highlight: user.active}">
+					{{user.name}} <br>
+					InGame: {{user.active}} <br>
+					Stake: {{user.stake}} <br>
+					$ {{user.money}} 
+				</div>
+				<img src="{{userCardImg}}" alt="Description"  class="cards">
 			</div>
 		</div>
 	</div>

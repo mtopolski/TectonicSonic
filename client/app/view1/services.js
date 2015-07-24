@@ -6,16 +6,7 @@ angular.module('app.service', [])
 }])
 .factory('Users', [function() {
 	// User model:
-  // {
-  //   "uid": 27694,
-  //   "name": "Bumble the Brave",
-  //   "money": 130,
-  //   "stake": 0,
-  //   "active": true,
-  //   "hand": ["4s","4c"]        
-  // }
-
-	var g_uid = 0;
+  var g_uid = 0;
 	var User = function (uid, name) {
 		this.uid = uid;
 		this.name = name;
@@ -252,31 +243,31 @@ angular.module('app.service', [])
       },
       {
         "uid": null,
-        "name": "A",
-        "money": 130,
+        "name": "",
+        "money": 0,
         "stake": 0,
-        "active": true,
-        "hand": ["4s","4c"]        
+        "active": false,
+        "hand": []        
       },
       {
         "uid": 33285,
-        "name": "B",
+        "name": "Name2",
         "money": 130,
         "stake": 0,
-        "active": true,
+        "active": false,
         "hand": ["4s","4c"]        
       },
       {
         "uid": null,
-        "name": "C",
-        "money": 130,
+        "name": "",
+        "money": 0,
         "stake": 0,
-        "active": true,
-        "hand": ["4s","4c"]        
+        "active": false,
+        "hand": []        
       },
       {
         "uid": 91137,
-        "name": "D",
+        "name": "Name4",
         "money": 130,
         "stake": 0,
         "active": true,
@@ -284,10 +275,10 @@ angular.module('app.service', [])
       },
       {
         "uid": 73921,
-        "name": "E",
+        "name": "Name6",
         "money": 130,
         "stake": 0,
-        "active": true,
+        "active": false,
         "hand": ["4s","4c"]        
       }
     ],

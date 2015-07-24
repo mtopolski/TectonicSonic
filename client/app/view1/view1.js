@@ -27,7 +27,7 @@ angular.module('app.view1', ['ngRoute'])
 
 		$scope.inputUsername = function() {
 			var myName = $scope.mySelf.myName;
-			console.log("myUsername:", myName);
+			// console.log("myUsername:", myName);
 			// httpRequest.identity(myName).then(function(dataResponse, status, headers, config) {
 			// 		$scope.mySelf.uid	= dataResponse.data;  
 			// });
@@ -35,7 +35,7 @@ angular.module('app.view1', ['ngRoute'])
 			// received assign uid from identity request resp
 			if (myName === "27694") {
 				$scope.mySelf.uid = 27694;	
-				console.log("mySelf", $scope.mySelf);
+				// console.log("mySelf", $scope.mySelf);
 			};
 		};
 
@@ -90,7 +90,7 @@ angular.module('app.view1', ['ngRoute'])
 		for (var i = 0; i < userGroup.length; i++) {
 			if (userGroup[i].uid === mySelf.uid) {
 					$scope.mySelf = userGroup[i];
-					console.log("Find Myself Data", $scope.mySelf.hand);
+					// console.log("Find Myself Data", $scope.mySelf.hand);
 					// renderMySelf
 					$scope.mySelf.cardsView = Cards.renderCards($scope.mySelf.hand);
 					continue;
@@ -100,6 +100,7 @@ angular.module('app.view1', ['ngRoute'])
 			users[i] = userGroup[i];	
 			users[i].cardsImg = [];
 			if (userGroup[i].uid !== null) {
+				// user name and stats
 				users[i].cardsImg.push(Cards.imageCardBack());
 			}
 		};
