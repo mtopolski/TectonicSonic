@@ -197,9 +197,15 @@ input {
 
 .controlPanel {
   margin-top: -200px;
+  color: white;
+}
+
+.controlPanel input {
+  width: 5em;
 }
 
 button {
   margin-top:10px;
   width: 6em;  height: 1.8em;
+  color: black;
 }

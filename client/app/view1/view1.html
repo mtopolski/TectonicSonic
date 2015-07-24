@@ -51,9 +51,10 @@
 	<!-- user input -->
 	<div class="controlPanel">
 		<!-- Fix: button lenght -->
+		<!-- <input type="text" name="User Name" ng-model="mySelf.stake" 
+				pattern="^[0-9 _]{1,15}$"> -->
 		<div ng-show="mySelf.active && mySelf.uid === gameState.turn">
-			<input ng-show="mySelf.showBet" type="text" name="User Name" ng-model="mySelf.stake" 
-				pattern="^[0-9 _]{1,15}$">
+			$ <input type="text" name="User Name" ng-model="myStake" pattern="^[0-9 _]{1,15}$">
 			<button type="button" class="btn-info" ng-click="betBtn()">Bet</button> <br>
 			<button type="button" class="btn-info" ng-click="checkBtn()">Check</button> <br>
 			<button type="button" class="btn-info" ng-click="callBtn()">Call</button> <br>

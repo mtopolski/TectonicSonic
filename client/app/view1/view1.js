@@ -16,6 +16,7 @@ angular.module('app.view1', ['ngRoute'])
 		$scope.deckCard = Cards.imageCardBack();
 		$scope.publicCardsImg = [];
 		$scope.users = [];
+		$scope.myStake = null;
 		$scope.mySelf = {
 			myName: "",
 			uid: undefined,
@@ -80,11 +81,16 @@ angular.module('app.view1', ['ngRoute'])
 		// input how much
 		$scope.betBtn = function() {
 			var myUid = $scope.mySelf.uid;
-			var myBid = $scope.mySelf.stake;
-			if (myBid < $scope.gameState.minstake) {
-				myBid = $scope.mySelf.stake = $scope.gameState.minstake;
-			};
-			// httpRequest.bet(myUid, myBid).then(function(dataResponse, status, headers, config) {
+			var myStake = $scope.myStake;
+			if (myStake < $scope.gameState.minstake) {
+				myStake = $scope.myStake = $scope.gameState.minstake;
+				if (myStake > $scope.mySelf.money) {
+					// exception: I don't have enough money left!
+					myStake = $scope.myStake = null;
+				} 
+			} 
+			// console.log("myStake ", myStake);
+			// httpRequest.bet(myUid, myStake).then(function(dataResponse, status, headers, config) {
 				
 			// };
 		};
