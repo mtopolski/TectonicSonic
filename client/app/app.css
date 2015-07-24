@@ -118,7 +118,7 @@ body {
   
 }
 
-.table #playerDeck {
+.table #mySelfDeck {
   height: auto;
   width: 170px;
   /*border-style: solid;*/
@@ -145,10 +145,14 @@ body {
   text-align: right;
   float:right;
   margin-top: -350px;
-  margin-right: 50px;
+  margin-right: 18px;
   /*position: relative;*/
 }
 
 .gameStats #inputUsername {
   color: black;
+}
+
+button {
+  width: 6em;  height: 1.8em;
 }

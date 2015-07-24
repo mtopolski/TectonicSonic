@@ -3,15 +3,8 @@
 		User Name:
 		<input type="text" name="User Name" ng-model="mySelf.myName" 
 		pattern="^[A-Za-z0-9 _]{1,15}$"> <br>
-
+		<p>{{}}</p>
 		<button type="button" class="btn-info" ng-click="inputUsername()"  id="inputUsername">Enter Game</button> <br>
-
-		<!-- Game Stats (Currently Simulation Only!):	<br>
-		Received from WebSocket: {{gameState.heapUsed}}; <br>
-		Line2: {{gameState.rss}} <br>
-		Line3: {{gameState.heapTotal}} <br>
-		Line4: {{gameState.heapTotal}} <br> -->
-
 		Game Stats (Currently Simulation Only!):	<br>
 		Received from WebSocket: {{gameState.cards}}; <br>
 		Line2: {{gameState.turn}} <br>
@@ -21,7 +14,7 @@
 
 	<div class="playersView">
 		<div ng-repeat="player in players">
-			Seats:{{player.seat}}
+			{{player.uid}}
 			<div ng-repeat="playerCardImg in player.cardsImg">
 					<img src="{{playerCardImg}}" alt="Description"  class="cards">
 			</div>
@@ -39,8 +32,8 @@
 				<img src="{{publicCardImg}}" alt="Description" class='card'>
 			</div>	
 		</div>
-		<div id='playerDeck'>
-			<div id='myCards' ng-repeat="myCard in mySelf.cards">
+		<div id='mySelfDeck'>
+			<div id='myCards' ng-repeat="myCard in mySelf.cardsView">
 				<img src="../image/{{myCard}}" alt="Description" class='card'>
 			</div>	
 		</div>		

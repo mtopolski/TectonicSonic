@@ -9,25 +9,13 @@ angular.module('app.view1', ['ngRoute'])
   });
 }])
 
-.controller('ViewCtrl', ['$scope', 'Users', 'Cards', 'wsComm', 'httpRequest', 'gameStateEmu',
-	function($scope, Users, Cards, wsComm, httpRequest, gameStateEmu) {
+.controller('ViewCtrl', ['$scope', 'Cards', 'wsComm', 'httpRequest', 'gameStateEmu',
+	function($scope, Cards, wsComm, httpRequest, gameStateEmu) {
 	///////////////////////////////////////////////
-	// Sim game logic
-	var players = [];
-	for (var i = 0; i < 5; i++) {
-		players.push(Users.addUser());
-	};
-
-	var mySelf = Users.addUser();
 	var deckCards = Cards.shuffleBySwap();
-
-	// $scope.deckCards
 	if (deckCards.length) {
 		$scope.cardBack = Cards.imageCardBack();
 	};
-
-	mySelf.cards.push(deckCards.pop());
-	mySelf.cards.push(deckCards.pop());
 
 	var publicCards = [];
 	publicCards.push(deckCards.pop());
@@ -38,18 +26,14 @@ angular.module('app.view1', ['ngRoute'])
 	publicCards.push(deckCards.pop());
 
 	// OtherPlayers cards
-	for (var i = 0; i < 5; i++) {
-		players[i].cards.push(deckCards.pop());
-		players[i].cards.push(deckCards.pop());
-		players[i].cardsImg.push(Cards.imageCardBack());
-	};
+	// for (var i = 0; i < 5; i++) {
+	// 	players[i].cards.push(deckCards.pop());
+	// 	players[i].cards.push(deckCards.pop());
+	// 	players[i].cardsImg.push(Cards.imageCardBack());
+	// };
 
-	$scope.players = players;
+	// $scope.players = players;
 	$scope.publicCardsImg = Cards.renderCards(publicCards);
-
-	// console.log("player status: ",  player);
-	mySelf.cards = Cards.renderCards(mySelf.cards);
-	$scope.mySelf = mySelf;	
 	///////////////////////////////////////////////
 	// Global vars
 	// wsComm.wsSend(JSON.stringify("Check"));
@@ -57,17 +41,27 @@ angular.module('app.view1', ['ngRoute'])
 
 	///////////////////////////////////////////////	
 	var init = function() {
-		$scope.mySelf.myName = "";
+		$scope.mySelf = {
+			myName: "",
+			uid: undefined
+			// uid: undefined || 27694
+		};
 		$scope.gameState;
-		// init ws communication
+
 		wsComm.wsInit();
 
 		$scope.inputUsername = function() {
 			var myName = $scope.mySelf.myName;
-			// console.log("myUsername:", myName);
+			console.log("myUsername:", myName);
 			// httpRequest.identity(myName).then(function(dataResponse, status, headers, config) {
 			// 		$scope.mySelf.uid	= dataResponse.data;  
 			// });
+			
+			// received assign uid from identity request resp
+			if (myName === "27694") {
+				$scope.mySelf.uid = 27694;	
+				console.log("mySelf", $scope.mySelf);
+			};
 		};
 
 		$scope.sitBtn = function() {
@@ -115,18 +109,38 @@ angular.module('app.view1', ['ngRoute'])
 
 	}
 
-	init();
+	// expect input array of users
+	// TODO: refactor name to renderUsers later
+	var renderPlayers = function(userGroup, mySelf) {
+		var players = [];
+		for (var i = 0; i < userGroup.length; i++) {
+			if (userGroup[i].uid === mySelf.uid) {
+					$scope.mySelf = userGroup[i];
+					console.log("Find Myself Data", $scope.mySelf.hand);
+					// renderMySelf
+					$scope.mySelf.cardsView = Cards.renderCards($scope.mySelf.hand);
+					continue;
+			};
+			
+			// render other users
+			players[i] = userGroup[i];	
+			players[i].cardsImg = [];
+			if (userGroup[i].uid !== null) {
+				players[i].cardsImg.push(Cards.imageCardBack());
+			}
+		};
+		$scope.players = players;
+	}
+
 	// check updated gameState received from WebSocket
-	// Required logic for updating front end view here
 	var gameStateProc = function (gameState) {
 		// required for dynamically change scope
 		$scope.$apply(function() {
-			// $scope.gameState = gameState;	
 			$scope.gameState = JSON.parse(gameStateEmu.gameStateJSON[0]); 				// Test only
-			console.log($scope.gameState);
 		});
+		renderPlayers($scope.gameState.user, $scope.mySelf);
 	};
-	// update game state through webSocket
-	wsComm.wsUpdate(gameStateProc);
 
+	init();
+	wsComm.wsUpdate(gameStateProc);
 }])

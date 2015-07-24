@@ -6,7 +6,15 @@ angular.module('app.service', [])
 }])
 .factory('Users', [function() {
 	// User model:
-  // global uid
+  // {
+  //   "uid": 27694,
+  //   "name": "Bumble the Brave",
+  //   "money": 130,
+  //   "stake": 0,
+  //   "active": true,
+  //   "hand": ["4s","4c"]        
+  // }
+
 	var g_uid = 0;
 	var User = function (uid, name) {
 		this.uid = uid;
@@ -90,11 +98,10 @@ angular.module('app.service', [])
 
  	var renderCards = function(cards) {
  		var deckCardsImg = [];
-	for (var i = 0, l = cards.length; i < l; i++) {
-		// deckCardsImg[i] = this.imageFromValueSuit(cards[i][0], cards[i][1]);
-		deckCardsImg[i] = imageFromValueSuit(cards[i][0], cards[i][1]);
-	};
-	return deckCardsImg;
+  	for (var i = 0, l = cards.length; i < l; i++) {
+  		deckCardsImg[i] = imageFromValueSuit(cards[i][0], cards[i][1]);
+  	};
+  	return deckCardsImg;
  	};
 
 	return {
