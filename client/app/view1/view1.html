@@ -13,10 +13,10 @@
 	</div>
 
 	<div class="playersView">
-		<div ng-repeat="player in players">
-			{{player.uid}}
-			<div ng-repeat="playerCardImg in player.cardsImg">
-					<img src="{{playerCardImg}}" alt="Description"  class="cards">
+		<div ng-repeat="user in users">
+			{{user.uid}}
+			<div ng-repeat="userCardImg in user.cardsImg">
+					<img src="{{userCardImg}}" alt="Description"  class="cards">
 			</div>
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 	<div class="table">
 		<div id="deck">
 			<!-- overlap cards -->
-			<img src="{{cardBack}}" alt="Description" class='card'>
+			<img src="{{deckCard}}" alt="Description" class='card'>
 		</div>
 
 		<div id="publicDeck">

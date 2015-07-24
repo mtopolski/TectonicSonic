@@ -11,36 +11,11 @@ angular.module('app.view1', ['ngRoute'])
 
 .controller('ViewCtrl', ['$scope', 'Cards', 'wsComm', 'httpRequest', 'gameStateEmu',
 	function($scope, Cards, wsComm, httpRequest, gameStateEmu) {
-	///////////////////////////////////////////////
-	var deckCards = Cards.shuffleBySwap();
-	if (deckCards.length) {
-		$scope.cardBack = Cards.imageCardBack();
-	};
-
-	var publicCards = [];
-	publicCards.push(deckCards.pop());
-	publicCards.push(deckCards.pop());
-	publicCards.push(deckCards.pop());
-	// Two more rounds
-	publicCards.push(deckCards.pop());
-	publicCards.push(deckCards.pop());
-
-	// OtherPlayers cards
-	// for (var i = 0; i < 5; i++) {
-	// 	players[i].cards.push(deckCards.pop());
-	// 	players[i].cards.push(deckCards.pop());
-	// 	players[i].cardsImg.push(Cards.imageCardBack());
-	// };
-
-	// $scope.players = players;
-	$scope.publicCardsImg = Cards.renderCards(publicCards);
-	///////////////////////////////////////////////
-	// Global vars
-	// wsComm.wsSend(JSON.stringify("Check"));
-	var gameState;
-
-	///////////////////////////////////////////////	
+	// wsComm.wsSend(JSON.stringify("Check"));	
 	var init = function() {
+		$scope.deckCard = Cards.imageCardBack();
+		$scope.publicCardsImg = [];
+		$scope.users = [];
 		$scope.mySelf = {
 			myName: "",
 			uid: undefined
@@ -110,9 +85,8 @@ angular.module('app.view1', ['ngRoute'])
 	}
 
 	// expect input array of users
-	// TODO: refactor name to renderUsers later
-	var renderPlayers = function(userGroup, mySelf) {
-		var players = [];
+	var renderUsers = function(userGroup, mySelf) {
+		var users = [];
 		for (var i = 0; i < userGroup.length; i++) {
 			if (userGroup[i].uid === mySelf.uid) {
 					$scope.mySelf = userGroup[i];
@@ -123,22 +97,30 @@ angular.module('app.view1', ['ngRoute'])
 			};
 			
 			// render other users
-			players[i] = userGroup[i];	
-			players[i].cardsImg = [];
+			users[i] = userGroup[i];	
+			users[i].cardsImg = [];
 			if (userGroup[i].uid !== null) {
-				players[i].cardsImg.push(Cards.imageCardBack());
+				users[i].cardsImg.push(Cards.imageCardBack());
 			}
 		};
-		$scope.players = players;
-	}
+		$scope.users = users;
+	};
+
+
+	var renderPublicDeck = function(publicCards) {
+		$scope.publicCardsImg = Cards.renderCards(publicCards);
+	};
 
 	// check updated gameState received from WebSocket
+	// Game flow chart
 	var gameStateProc = function (gameState) {
 		// required for dynamically change scope
 		$scope.$apply(function() {
 			$scope.gameState = JSON.parse(gameStateEmu.gameStateJSON[0]); 				// Test only
 		});
-		renderPlayers($scope.gameState.user, $scope.mySelf);
+		renderUsers($scope.gameState.user, $scope.mySelf);
+		// check game status before putting cards on table?
+		renderPublicDeck($scope.gameState.cards)
 	};
 
 	init();
