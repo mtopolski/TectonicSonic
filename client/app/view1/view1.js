@@ -84,12 +84,13 @@ angular.module('app.view1', ['ngRoute'])
 			var myStake = $scope.myStake;
 			if (myStake < $scope.gameState.minstake) {
 				myStake = $scope.myStake = $scope.gameState.minstake;
-				if (myStake > $scope.mySelf.money) {
+			} 
+
+			if (myStake > $scope.mySelf.money) {
 					// exception: I don't have enough money left!
 					myStake = $scope.myStake = null;
 					console.error("No money!");
-				}
-			} 
+			}
 			// console.log("myStake ", myStake);
 			// httpRequest.bet(myUid, myStake).then(function(dataResponse, status, headers, config) {
 				
