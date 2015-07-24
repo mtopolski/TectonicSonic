@@ -1,5 +1,5 @@
 var game = require('./game.js');
 
-game.onChange(function() {
+game.onUpdate(function() {
 	wss.broadcast(game.serialize());
 });

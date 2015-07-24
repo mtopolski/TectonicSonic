@@ -37,125 +37,134 @@ var User = function(name) {
 }
 
 var idCount = 1; //id 0 exists in poker.js for hand comparison, must start this at 1
-
 var assignId = function() {
 	return idCount++;
 }
 
-
-
+var MIN_BET = 100;
 
 var users = {};
-
-
-//state
 var table = [null, null, null, null, null, null];
+var players = [];
+
 var pot = 0;
 var minstake = 0;
 var round = 0;
-var cards = ['ks', 'qh', '1c', '7d', 'as'];
+var cards = null;
+
+var start = 0;
+var last = null;
 var turn = null;
 var deck = null;
-var directive = null;
 
 var deal = function() {
+    round = 0;
+    pot = 0;
+    minstake = 0;
+    start++;
+    turn = null;
 	deck = new Deck();
-	for (var i = 0; i < table.length; i++) {
-		if (table[i]) {
-			table[i].newHand(deck.nextCard(), deck.nextCard());
-			// TODO: design fair game
-			turn = table[i].uid;
+
+    // deal cards
+	cards = [];
+	for(var i = 0; i < 5; i++) {
+		cards.push(deck.nextCard());
+	}
+
+    // init players
+	for(var i = 0; i < table.length; i++) {
+		if(table[i]) {
+            players.push(table[i]);
+            var player = users[table[i]];
+            player.active = true;
+			player.newHand(deck.nextCard(), deck.nextCard());
 		}
 	}
-	cards = [];
-	for (var i = 0; i < 5; i++) {
-		cards.push(deck.nexCard());
-	}
-	change("deal");
+
+    // miniblinds
+    turn = players[(start-1) % players.length];
+    bet(turn, MIN_BET/2);
+
+    // blinds
+    turn = nextPlayer();
+    bet(turn, MIN_BET);
+
+    round++;
+    update();
 }
 
+var bet = function(uid, amount) {
+    var player = users[uid];
+    player.money -= amount;
+    player.stake += amount;
+    if(player.stake > minstake) {
+        minstake = player.stake;
+        last = uid;
+    }
+}
 
 var checkBetRaiseCall = function(amount) {
-	amount = amount === undefined ? minstake - users[turn]['stake'] : amount;
-	users[turn]['money'] -= amount;
-	users[turn]['stake'] += amount;
-	minstake += amount;
-	//turn = nextPlayer();
-	nextStep();
-	//change();
+    bet(turn, amount);
+	next();
 }
 
-
-var nextTurn = function() {
-	//get user id of next player || WARNING: if a player folds or stands nextTurn must be called before they are set to inactive
-	var ids = [];
-	for (var i = 0; i < table.length; i++) {
-		if (table[i] && table[i].active === true) {
-			ids.push(table[i].uid);
-		}
-	}
-	return ids[(ids.indexOf(turn) + 1 < ids.length ? ids.indexOf(turn) + 1 : 0]);
+var fold = function() {
+    var player = users[turn];
+    player.active = false;
+    pot += player.stake;
+    player.stake = 0;
+	next();
 }
 
-var backToStart = 0 //this variable will become one once the turns hit full circle
-
-var nextStep = function() {
-	//see if current betting round has concluded
-	if (backToStart && !outstanding()) {
-	  //if so, next round
-	  round++;
-	  for (var i = 0; i < table.length; i++) {
-	  	pot += table[i].stake;
-	  	table[i].stake = 0;
-	  }
-	  backToStart = 0;
-	  turn = null //uid of first better for this hand, something we need to track
-  } else {
-  	nextTurn();
-  }
+var next = function() {
+    var np = nextPlayer();
+    if(np === last) {
+        round++;
+        minstake = MIN_BET;
+        for(var i = 0; i < players.length; i++) {
+            var player = users[players[i]];
+            pot += player.stake;
+            player.stake = 0;
+        }
+        if(round === 5) {
+            //....
+        } else {
+            turn = players[start % players.length];
+        }
+    }
+    else
+        turn = np;
+    update();
 }
 
-var outstanding = function() {
-	var result = true;
-	for (var i = 0; i < table.length; i++) {
-		if (table[i].active && table[i].stake !== minstake) {
-			result = false;
-		}
-	}
-	return result;
+var nextPlayer = function() {
+	return players[(players.indexOf(turn) + 1) % players.length];
 }
 
 
 
 
 
-//passing current directive
-var round = { 
-	0: 'waiting to start',
-	1: 'first round of betting',
-	2: 'we need to write more rounds'
-}
 
 
 var callback;
 
-function change(reason) {
-	directive = reason;
+function update() {
 	callback();
 }
 
-module.exports.onChange = function(cb) {
+module.exports.onUpdate = function(cb) {
 	callback = cb;
 }
 
 module.exports.serialize = function() {
 	return 
-	{
+	JSON.stringify({
 	  "round": round,
 	  "cards": cards,
 	  "minstake": minstake,
 	  "turn": turn,
 	  "users": users,
 	  "table": table
-  }
+    });
 };
