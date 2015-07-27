@@ -1,0 +1,22 @@
+{
+  "name": "pokerjs",
+  "version": "1.0.0",
+  "description": "Relax. You're here. No pain, no fear. You're with the best now.",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/horologix/TectonicSonic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/horologix/TectonicSonic/issues"
+  },
+  "homepage": "https://github.com/horologix/TectonicSonic#readme",
+  "dependencies": {
+    "ws": "^0.7.2"
+  }
+}

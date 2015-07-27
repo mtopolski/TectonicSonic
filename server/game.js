@@ -72,6 +72,7 @@ var deal = function() {
 	}
 
     // init players
+    players = [];
 	for(var i = 0; i < table.length; i++) {
 		if(table[i]) {
             players.push(table[i]);
