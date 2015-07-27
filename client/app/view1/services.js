@@ -36,11 +36,11 @@ angular.module('app.service', [])
 		if (IMAGE_VALUE[value] !== undefined) {
 			value = IMAGE_VALUE[value];
 		};
-		return "../image/cards/" + value + "-" + IMAGE_SUIT[suit] + ".png";
+		return "../app/image/cards/" + value + "-" + IMAGE_SUIT[suit] + ".png";
 	};
 
 	var imageCardBack = function() {
-		return "../image/card-back.png";
+		return "../app/image/card-back.png";
 	};
 
   var cardFromValueSuit = function (value, suit) {
@@ -82,25 +82,26 @@ angular.module('app.service', [])
 .factory("wsComm", [function() {
 	var ws;
 	var wsInit = function() {
-		var port = 8000;
+		var port = 8080;
 		var host = "localhost" || window.document.location.host.replace(/:.*/, '');
 		ws = new WebSocket('ws://' + host + ':' + port);
-	};
+    console.log('success web socket fun time');
+  };
 
-	var wsSend = function(msg) {
-		if (ws === undefined) {
-			console.error("WebSocket has not been initialized yet!");
-			return null;
-		};
+  // var wsSend = function(msg) {
+  //  if (ws === undefined) {
+  //    console.error("WebSocket has not been initialized yet!");
+  //    return null;
+  //  };
 
-		ws.onopen = function(msg) {
-			console.log("Sending out message: ", msg);
-			ws.send(msg);
-		};
+  //  ws.onopen = function(msg) {
+  //    console.log("Sending out message: ", msg);
+  //    ws.send(msg);
+  //  };
 
-		ws.onopen(msg);
-	};
-		
+  //  ws.onopen(msg);
+  // };
+    
 
   var wsUpdate = function (gameStateUpdateCb) {
     if (ws === undefined) {
@@ -108,6 +109,7 @@ angular.module('app.service', [])
       return null;
     };
     ws.onmessage = function (evt) {
+      console.log(evt.data);
       var gameState = JSON.parse(evt.data);
       gameStateUpdateCb(gameState);
     };
@@ -116,17 +118,24 @@ angular.module('app.service', [])
 	return {
     ws: ws,
 		wsInit: wsInit,
-		wsSend: wsSend,
+		// wsSend: wsSend,
     wsUpdate: wsUpdate
 	}
 }])
 .factory('httpRequest', ['$http', function($http) {
   var baseUri = "";
   var identify = function(username) {
+    console.log(username);
 		return $http({
       method: "POST",
       url: baseUri + "/user/",
       data: {name: username}
+    })
+    .success(function(stuff){
+      console.log('success!')
+    })
+    .error(function(err){
+      console.log('errors oh my');
     })
   };
 

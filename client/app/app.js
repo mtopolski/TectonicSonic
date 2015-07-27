@@ -2,6 +2,7 @@
 
 // Declare app level module which depends on views, and components
 angular.module('app', [
+	'btford.socket-io',
   'ngRoute',
   'app.service',
   'app.view1'

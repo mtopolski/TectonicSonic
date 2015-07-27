@@ -1,11 +1,11 @@
  'use strict';
 
-angular.module('app.view1', ['ngRoute'])
+angular.module('app.view1', ['ngRoute', 'btford.socket-io'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
     templateUrl: 'view1/view1.html',
-    controller: 'ViewCtrl'
+    controller: 'ViewCtrl',
   });
 }])
 
@@ -13,6 +13,11 @@ angular.module('app.view1', ['ngRoute'])
 	function($scope, Cards, wsComm, httpRequest, gameStateEmu) {
 	// wsComm.wsSend(JSON.stringify("Check"));	
 	var init = function() {
+		// socket.forward('gameStateUpdate', $scope);
+		$scope.gameState;
+		$scope.$on('socket:gameStateUpdate', function (ev, data) {
+      $scope.gameState = data;
+    })
 		$scope.deckCard = Cards.imageCardBack();
 		$scope.publicCardsImg = [];
 		$scope.users = [];
@@ -23,33 +28,32 @@ angular.module('app.view1', ['ngRoute'])
 			// uid: undefined || 27694
 			inGame: false
 		};
-		$scope.gameState;
 
 		wsComm.wsInit();
 
 		$scope.inputUsername = function() {
 			var myName = $scope.mySelf.myName;
 			// console.log("myUsername:", myName);
-			// httpRequest.identity(myName).then(function(dataResponse, status, headers, config) {
-			// 		$scope.mySelf.uid	= dataResponse.data;  
-			// });
+			httpRequest.identify(myName).then(function(dataResponse, status, headers, config) {
+					$scope.mySelf.uid	= dataResponse.data;  
+			});
 			
 			// received assign uid from identity request resp
 			// sim only
-			if (myName === "27694") {
-				$scope.mySelf.uid = 27694;	
-				// console.log("mySelf", $scope.mySelf);
-			} else {
-				$scope.mySelf.uid = 27695;
-			}
+			// if (myName === "27694") {
+			// 	$scope.mySelf.uid = 27694;	
+			// 	// console.log("mySelf", $scope.mySelf);
+			// } else {
+			// 	$scope.mySelf.uid = 27695;
+			// }
 		};
 
 		$scope.sitBtn = function() {
 			var myUid = $scope.mySelf.uid;
 			var seatId = checkSeats($scope.gameState.table);
-			// httpRequest.sit(myUid, seatId).then(function(dataResponse, status, headers, config) {
-				
-			// };
+			httpRequest.sit(myUid, seatId).then(function(dataResponse, status, headers, config) {
+				console.log($scope.mySelf.uid);
+			});
 
 			// sim only
 			if (myUid === 27695) {
@@ -120,13 +124,18 @@ angular.module('app.view1', ['ngRoute'])
 	var renderUsers = function(userGroup, mySelf) {
 		var users = [];
 		for (var i = 0, l = userGroup.length; i < l; i++) {
-			if (userGroup[i].uid === mySelf.uid) {
+			console.log(userGroup[i].uid);
+			console.log(mySelf.uid);
+			if (userGroup[i].uid == mySelf.uid) {
 					$scope.mySelf = userGroup[i];
-					// render mySelf
-					$scope.mySelf.inGame = true;
 					$scope.mySelf.cardsView = Cards.renderCards($scope.mySelf.hand);
-					// continue;
-			};
+				if ($scope.gameState.turn == mySelf.uid) {
+						// render mySelf
+						$scope.mySelf.inGame = true;
+						console.log($scope.mySelf, 'what is happening');
+						// continue;
+				}
+			}
 			
 			// render other users
 			users[i] = userGroup[i];	
@@ -148,14 +157,22 @@ angular.module('app.view1', ['ngRoute'])
 	var gameStateProc = function (gameState) {
 		// required for dynamically change scope
 		$scope.$apply(function() {
-			$scope.gameState = JSON.parse(gameStateEmu.gameStateJSON[0]); 				// Test only
+			// $scope.gameState = JSON.parse(gameStateEmu.gameStateJSON[0]); 				// Test only
+			$scope.gameState = gameState;
+			console.log(gameState);
+			renderUsers($scope.gameState.users, $scope.mySelf);
+			// check game status before putting cards on table?
+			renderPublicDeck($scope.gameState.cards)
 		});
-		renderUsers($scope.gameState.user, $scope.mySelf);
-		// check game status before putting cards on table?
-		renderPublicDeck($scope.gameState.cards)
 	};
 
 	init();
 	wsComm.wsUpdate(gameStateProc);
 
 }])
+
+// .factory('socket', function (socketFactory) {
+//   return socketFactory({
+//     ioSocket: io.connect('/some/path')
+//   });
+// })

@@ -1,6 +1,6 @@
 var Deck = function() {
 	var deck = [] 
-	var value = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'j', 'q', 'k', 'a'];
+	var value = [2, 3, 4, 5, 6, 7, 8, 9, 't', 'j', 'q', 'k', 'a'];
 	var suit = ['s', 'c', 'd', 'h'];
 	for (var i = 0; i < suit.length; i++) {
 		for (var j = 0; j < value.length; j++) {
@@ -27,9 +27,9 @@ var User = function(name) {
 	this.money = 10000;
 	this.stake = 0;
 	this.active = false;
-	this.hand = null;
+	this.hand = [];
 	this.clearHand = function() {
-		this.hand = null;
+		this.hand = [];
 	}
 	this.newHand = function(c1, c2) {
 		this.hand = [c1, c2];
@@ -50,7 +50,7 @@ var players = [];
 var pot = 0;
 var minstake = 0;
 var round = 0;
-var cards = null;
+var cards = ['as', 'ad', 'js', 'qs', 'ac'];
 
 var start = 0;
 var last = null;
@@ -58,11 +58,12 @@ var turn = null;
 var deck = null;
 
 var deal = function() {
-    round = 0;
-    pot = 0;
-    minstake = 0;
-    start++;
-    turn = null;
+	console.log('dealt');
+  round = 1;
+  pot = 0;
+  minstake = 0;
+  start++;
+  turn = null;
 	deck = new Deck();
 
     // deal cards
@@ -90,7 +91,6 @@ var deal = function() {
     turn = nextPlayer();
     bet(turn, MIN_BET);
 
-    round++;
     update();
 }
 
@@ -142,10 +142,35 @@ var nextPlayer = function() {
 	return players[(players.indexOf(turn) + 1) % players.length];
 }
 
+module.exports.addUser = function(userName) {
+	var user = new User(userName);
+	users[user.uid] = user;
+	return user.uid;
+}
 
+var countTable = function() {
+	var count = 0;
+	for(var i = 0; i < table.length; i++) {
+		if(table[i]) {
+			count++
+		}
+	}
+	return count;
+}
 
-
-
+module.exports.sitUser = function(uid, seat) {
+	if(!table[seat]) {
+		table[seat] = uid;
+		console.log(table);
+		console.log(uid);
+		console.log(seat);
+		if (round === 0 && countTable() > 1){
+			deal();
+		} else {
+			update();
+		}
+	}
+}
 
 
 var callback;
@@ -159,13 +184,24 @@ module.exports.onUpdate = function(cb) {
 }
 
 module.exports.serialize = function() {
-	return 
-	JSON.stringify({
+	var userArray = function() {
+		var result = [];
+		for (var i = 0; i < table.length; i++) {
+			if(table[i]) {
+				var user = users[table[i]];
+			  result.push(user);
+			}
+		}
+		return result;
+	}
+	var s = JSON.stringify({
 	  "round": round,
 	  "cards": cards,
 	  "minstake": minstake,
 	  "turn": turn,
-	  "users": users,
+	  "users": userArray(),
 	  "table": table
     });
+	console.log(s);
+	return s;
 };
