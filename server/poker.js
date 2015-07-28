@@ -17,6 +17,7 @@ module.exports.best = function(table, shown) {
       winners.push(x);
     }
   }
+  console.log("winners array: ", winners);
   return winners;
 }
 

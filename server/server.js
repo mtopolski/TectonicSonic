@@ -1,6 +1,6 @@
 var fs = require("fs");
 
-var SERVER_IP   = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var SERVER_IP   = process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0";
 var SERVER_PORT = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 var WebSocketServer = require('ws').Server
@@ -33,11 +33,33 @@ var server = http.createServer(function(request, response) {
         });
 
     }
-    if(request.url==="/stand/") {}
-    if(request.url==="/check/") {}
-    if(request.url==="/call/") {}
-    if(request.url==="/bet/") {}
-    if(request.url==="/fold/") {}
+    if(request.url==="/play/stand/") {
+        var data=""; request.on("data", function(d) {data+=d;}); request.on("end", function() {
+            data=JSON.parse(data);
+            game.stand(data.uid);
+        });
+    }
+    if(request.url==="/play/check/") {
+        var data=""; request.on("data", function(d) {data+=d;}); request.on("end", function() {
+            data=JSON.parse(data);
+            game.checkBetRaiseCall(0);
+        });
+    }
+    if(request.url==="/play/call/") {
+        var data=""; request.on("data", function(d) {data+=d;}); request.on("end", function() {
+            data=JSON.parse(data);
+            game.checkBetRaiseCall(parseInt(data.value));
+        });
+    }
+    if(request.url==="/play/bet/") {
+        var data=""; request.on("data", function(d) {data+=d;}); request.on("end", function() {
+            data=JSON.parse(data);
+            game.checkBetRaiseCall(parseInt(data.value));
+        });
+    }
+    if(request.url==="/play/fold/") {
+        game.fold();
+    }
     else fs.readFile("../client"+request.url, function(err, data) {
         if(err) {
             response.writeHead(404);

@@ -83,7 +83,7 @@ angular.module('app.service', [])
 	var ws;
 	var wsInit = function() {
 		var port = 8080;
-		var host = "localhost" || window.document.location.host.replace(/:.*/, '');
+		var host = "192.168.1.127" || window.document.location.host.replace(/:.*/, '');
 		ws = new WebSocket('ws://' + host + ':' + port);
     console.log('success web socket fun time');
   };
@@ -175,7 +175,8 @@ angular.module('app.service', [])
       method: "POST",
       url: baseUri + "/play/call/",
       data: {
-        uid: uid
+        uid: uid,
+        value: -1
       }
     })
   };
@@ -207,7 +208,8 @@ angular.module('app.service', [])
     stand: stand,
     check: check,
     fold: fold,
-    bet: bet
+    bet: bet,
+    call: call
 	}
 }])
 .factory('gameStateEmu', [function() {

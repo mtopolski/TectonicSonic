@@ -1,3 +1,5 @@
+var poker = require('./poker.js');
+
 var Deck = function() {
 	var deck = [] 
 	var value = [2, 3, 4, 5, 6, 7, 8, 9, 't', 'j', 'q', 'k', 'a'];
@@ -46,11 +48,11 @@ var MIN_BET = 100;
 var users = {};
 var table = [null, null, null, null, null, null];
 var players = [];
-
+var winner = null;
 var pot = 0;
 var minstake = 0;
 var round = 0;
-var cards = ['as', 'ad', 'js', 'qs', 'ac'];
+var cards = ['ts', 'js', 'qs', 'ks', 'as'];
 
 var start = 0;
 var last = null;
@@ -64,6 +66,7 @@ var deal = function() {
   minstake = 0;
   start++;
   turn = null;
+  winner = null;
 	deck = new Deck();
 
     // deal cards
@@ -105,10 +108,26 @@ var bet = function(uid, amount) {
 }
 
 var checkBetRaiseCall = function(amount) {
-    bet(turn, amount);
+  if(amount === -1) {
+  	amount = callAmount();
+  	console.log('call amount: ', amount);
+  }
+  bet(turn, amount);
 	next();
 }
 
+var countPlayers = function() {
+	var count = 0;
+	for(var i = 0; i < players.length; i++) {
+		if (users[players[i]].active) {
+			count++;
+			temp = users[players[i]].uid;
+		}
+	}
+	return count;
+}
+
+module.exports.checkBetRaiseCall = checkBetRaiseCall;
 var fold = function() {
     var player = users[turn];
     player.active = false;
@@ -116,19 +135,32 @@ var fold = function() {
     player.stake = 0;
 	next();
 }
+module.exports.fold = fold;
+var callAmount = function() {
+	return minstake - users[turn].stake;
+}
 
 var next = function() {
     var np = nextPlayer();
+    var count = countPlayers();
+    if(count === 1) {
+    	round = 4;
+    }
     if(np === last) {
         round++;
-        minstake = MIN_BET;
+        minstake = 0;
         for(var i = 0; i < players.length; i++) {
             var player = users[players[i]];
             pot += player.stake;
             player.stake = 0;
         }
         if(round === 5) {
-            //....
+            winner = poker.best(userArray(), cards)[0];
+            turn = null;
+            console.log("winner: ", winner);
+            users[winner].money += pot;
+            pot = 0;
+            setTimeout(deal, 5000);
         } else {
             turn = players[start % players.length];
         }
@@ -139,6 +171,13 @@ var next = function() {
 }
 
 var nextPlayer = function() {
+	var int = players.indexOf(turn);
+	for(var i = 1; i < players.length + 1; i++) {
+		var j = (int + i) % players.length; 
+		if(users[players[j]].active) {
+			return players[j];
+		}
+	}
 	return players[(players.indexOf(turn) + 1) % players.length];
 }
 
@@ -161,15 +200,21 @@ var countTable = function() {
 module.exports.sitUser = function(uid, seat) {
 	if(!table[seat]) {
 		table[seat] = uid;
-		console.log(table);
-		console.log(uid);
-		console.log(seat);
 		if (round === 0 && countTable() > 1){
 			deal();
 		} else {
 			update();
 		}
 	}
+}
+
+module.exports.stand = function(uid) {
+	for(var i = 0; i < table.length; i++) {
+		if(table[i] == uid) {
+			table[i] = null;
+		}
+	}
+	fold();
 }
 
 
@@ -183,25 +228,27 @@ module.exports.onUpdate = function(cb) {
 	callback = cb;
 }
 
-module.exports.serialize = function() {
-	var userArray = function() {
-		var result = [];
-		for (var i = 0; i < table.length; i++) {
-			if(table[i]) {
-				var user = users[table[i]];
-			  result.push(user);
-			}
+function userArray() {
+	var result = [];
+	for (var i = 0; i < table.length; i++) {
+		if(table[i]) {
+			var user = users[table[i]];
+		  result.push(user);
 		}
-		return result;
 	}
+	return result;
+}
+
+module.exports.serialize = function() {
 	var s = JSON.stringify({
 	  "round": round,
 	  "cards": cards,
 	  "minstake": minstake,
 	  "turn": turn,
 	  "users": userArray(),
-	  "table": table
+	  "table": table,
+	  "pot": pot,
+	  "winner": winner
     });
-	console.log(s);
 	return s;
 };

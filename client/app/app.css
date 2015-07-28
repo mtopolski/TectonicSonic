@@ -60,6 +60,17 @@ body {
   /*float:right;*/
 }
 
+.doubleCard {
+  width: 75px;
+  height: 110px;
+  display: block;
+  border-radius: 10px;
+  position: relative;
+  margin: 3px 3px 3px 3px;
+  float: left;
+  transform: rotateX(40deg) rotateY(-10deg) rotateZ(10deg);
+}
+
 .highlight {
   /*margin-top: 20px;*/
   width: 150px;
@@ -70,7 +81,7 @@ body {
   padding: 3px 5px;
   margin: -3px -5px;
   line-height: 1.7;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 .inactive {
@@ -107,7 +118,6 @@ body {
   width: 75px;
   height: 110px;   
   display: block;
-  border: 2px solid black;
   border-radius: 10px;
   position: relative;
   margin: 3px 3px 3px 3px;
